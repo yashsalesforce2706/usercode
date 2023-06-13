@@ -9,7 +9,31 @@ import org.springframework.stereotype.Service;
 
 @Service
 class InventoryService {
- 
- //write code for task 7,8,9 here
+
+    private ItemRepository itemRepository;
+
+    private CartRepository cartRepository;
+
+    InventoryService(ItemRepository repository,
+                     CartRepository cartRepository) {
+        this.itemRepository = repository;
+        this.cartRepository = cartRepository;
+    }
+
+    public Mono<Cart> getCart(String cartId) {
+        return this.cartRepository.findById(cartId);
+    }
+
+    public Flux<Item> getInventory() {
+        return this.itemRepository.findAll();
+    }
+
+    Mono<Item> saveItem(Item newItem) {
+        return this.itemRepository.save(newItem);
+    }
+
+    Mono<Void> deleteItem(String id) {
+        return this.itemRepository.deleteById(id);
+    }
 
 }
