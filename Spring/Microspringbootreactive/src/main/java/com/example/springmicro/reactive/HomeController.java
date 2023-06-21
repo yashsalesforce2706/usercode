@@ -25,9 +25,35 @@ public class HomeController {
 		this.inventoryService = inventoryService;
 	}
 
-	//Write code for task: 11 here
+	@GetMapping
+	Mono<Rendering> home(
+			@RegisteredOAuth2AuthorizedClient OAuth2AuthorizedClient authorizedClient,
+			@AuthenticationPrincipal OAuth2User oauth2User) {
+		return Mono.just(Rendering.view("home.html")
+				.modelAttribute("items", this.inventoryService.getInventory())
+				.modelAttribute("cart", this.inventoryService.getCart(cartName(oauth2User))
+						.defaultIfEmpty(new Cart(cartName(oauth2User))))
+				.modelAttribute("userName", oauth2User.getName())
+				.modelAttribute("authorities", oauth2User.getAuthorities())
+				.modelAttribute("clientName",
+						authorizedClient.getClientRegistration().getClientName())
+				.modelAttribute("userAttributes", oauth2User.getAttributes())
+				.build());
+	}
 	
     //Write code for task: 12 here
+
+	@PostMapping("/add/{id}")
+	Mono<String> addToCart(@AuthenticationPrincipal OAuth2User oauth2User, @PathVariable String id) {
+		return this.inventoryService.addItemToCart(cartName(oauth2User), id)
+				.thenReturn("redirect:/");
+	}
+
+	@DeleteMapping("/remove/{id}")
+	Mono<String> removeFromCart(@AuthenticationPrincipal OAuth2User oauth2User, @PathVariable String id) {
+		return this.inventoryService.removeOneFromCart(cartName(oauth2User), id)
+				.thenReturn("redirect:/");
+	}
 
 
 
