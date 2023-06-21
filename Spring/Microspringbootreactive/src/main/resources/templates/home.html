@@ -28,6 +28,23 @@
 <div id="myDIV" style="display:none;">
 <div sec:authorize="isAuthenticated()">
   <!-- Write your code here -->
+    <table>
+        <tr>
+            <td>User:</td>
+            <td><span sec:authentication="name"></span></td>
+        </tr>
+        <tr>
+            <td>Authorities:</td>
+            <td th:text="${authorities}"></td>
+        </tr>
+        <tr th:each="userAttribute : ${userAttributes}">
+            <td th:text="${userAttribute.key}"/>
+            <td th:text="${userAttribute.value}"/>
+        </tr>
+    </table>
+    <form action="#" th:action="@{/logout}" method="post">
+        <input type="submit" value="Logout"/>
+    </form>
     
 
 </div>
