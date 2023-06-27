@@ -3,15 +3,11 @@ spring:
     oauth2:
       client:
         registration:
-          google:
-            client-id:
-            client-secret:
+          aws:
+            client-id: 305cgjh7bp73nvpie08uhdrn7k
+            client-secret: bj892m9outgnl3kdig8u3bmjdfvvfblqjfuj0phk8an5ho6ao9f
   webflux:
     hiddenmethod:
       filter:
-        enabled: true             
-server:
-  ssl:
-    key-store: classpath:secure.p12
-    key-store-password: password
-    key-password: password
+        enabled: true
+
